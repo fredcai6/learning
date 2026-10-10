@@ -23,6 +23,15 @@ ln -s "$PWD/skill/teach" ~/.claude/skills/teach
 
 Then, from the vault: `/teach <learner> <topic>`.
 
+## Before the website: lessons on the home network
+
+```bash
+python3 scripts/serve_local.py ../learning-vault --port 8090
+```
+
+Read only. Serves lessons, reference sheets and assets, plus an index; nothing
+under `learners/` or `sources/`. Reachable by anything on the same network.
+
 ## Checking a vault
 
 ```bash
