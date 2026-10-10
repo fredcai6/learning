@@ -28,6 +28,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
+## DrCatHicks/learning-goal — goal sharpening
+
+The explicit-goal branch of the mission interview in `skill/teach/SKILL.md` is adapted from Cat Hicks' [learning-goal](https://github.com/DrCatHicks/learning-goal), licensed [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Changes: reduced to sharpening, a first milestone and one if-then plan, asked only when the learner names an explicit goal.
+
 ## rodbv/socratic-skills — follow-up questioning
 
 The practice-in-conversation rules are adapted from Rodrigo Vieira's [quiz-me](https://github.com/rodbv/socratic-skills).

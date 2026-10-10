@@ -46,6 +46,7 @@ Short and practical. Most learners want to learn a topic well and see where it f
 
 1. **Where they met it.** Ask what brought the topic up: a tool, a paper, a conversation, curiosity.
 2. **Practical use.** Ask what they would like to be able to do with it, if anything. "Nothing in particular" is a fine answer; then the goal is understanding, and the connections carry more weight.
+   **If they name an explicit goal** — a deadline, an exam, a project to finish, something they must be able to do — sharpen it before moving on, one turn each: ask about whichever of specific, observable, achievable or time-bound is weakest; ask for a first milestone that would still matter; ask what is most likely to get in the way, and have them draft one small plan in the form "If [moment], then I will [action]". The goal, milestone and plan are theirs to write; you ask and reflect. (Adapted from Cat Hicks' [learning-goal](https://github.com/DrCatHicks/learning-goal).)
 3. **What it touches.** Ask what they already know that this seems to connect to, and which neighbouring topics they would enjoy poking at along the way. This is the knowledge web the lessons hang the topic on.
 4. **Place them.** Ask what they already know that bears on it, then two or three short diagnostic questions to see the depth. Write each piece of established prior knowledge as a learning record.
 
@@ -143,4 +144,4 @@ When the learner says how they like to be taught, record it in their `NOTES.md` 
 
 ---
 
-Built on Matt Pocock's [`teach`](https://github.com/mattpocock/skills) skill (MIT). Follow-up questioning adapted from Rodrigo Vieira's [socratic-skills](https://github.com/rodbv/socratic-skills) (MIT).
+Built on Matt Pocock's [`teach`](https://github.com/mattpocock/skills) skill (MIT). Goal sharpening adapted from Cat Hicks' [learning-goal](https://github.com/DrCatHicks/learning-goal) (CC BY 4.0). Follow-up questioning adapted from Rodrigo Vieira's [socratic-skills](https://github.com/rodbv/socratic-skills) (MIT).
