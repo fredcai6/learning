@@ -41,8 +41,22 @@ class Keys:
         return self._keys
 
 
+def _unverified(token: str) -> dict:
+    try:
+        return jwt.decode(token, options={"verify_signature": False})
+    except jwt.PyJWTError:
+        return {}
+
+
 def email_from_token(token: str | None, keys: Keys, audience: str | None, issuer: str | None) -> str | None:
-    if not token or not audience or not issuer:
+    if not token:
+        return None
+    if not audience or not issuer:
+        # Setup aid: the audience tag and issuer are what this deployment
+        # needs configured, and they are not secrets.
+        claims = _unverified(token)
+        log.warning("Access token arrived but LEARN_ACCESS_AUD/ISSUER are unset; token aud=%s iss=%s",
+                    claims.get("aud"), claims.get("iss"))
         return None
     available = keys.get()
     try:
@@ -54,7 +68,8 @@ def email_from_token(token: str | None, keys: Keys, audience: str | None, issuer
         claims = jwt.decode(token, key=key, algorithms=["RS256"], audience=audience, issuer=issuer,
                             options={"require": ["exp", "iat", "aud", "iss"]})
     except jwt.PyJWTError as exc:
-        log.info("rejected Access token: %s", exc)
+        claims = _unverified(token)
+        log.warning("rejected Access token: %s (aud=%s iss=%s)", exc, claims.get("aud"), claims.get("iss"))
         return None
     email = claims.get("email")
     return email if isinstance(email, str) else None
