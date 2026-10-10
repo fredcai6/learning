@@ -1,7 +1,6 @@
 ---
 name: teach
 description: Teach a learner a topic across many sessions, from a shared vault of sources, lessons and review cards.
-disable-model-invocation: true
 argument-hint: "[learner] [topic or what to learn]"
 ---
 
