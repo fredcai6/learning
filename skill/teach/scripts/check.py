@@ -19,7 +19,7 @@ ID = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 NUMBERED = re.compile(r"^\d{4}-[a-z0-9]+(?:-[a-z0-9]+)*$")
 SOURCE_KINDS = {"book", "notes", "paper", "video", "web", "course", "community"}
 NODE_STATES = {"unknown", "new", "shaky", "working", "solid"}
-CARD_KINDS = {"produce", "predict", "explain", "recall"}
+CARD_KINDS = {"produce", "predict", "explain", "recall", "name"}
 CONNECTION_KINDS = {"knows", "curious"}
 
 

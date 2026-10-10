@@ -104,6 +104,7 @@ Before writing one, read `assets/` and build from the components there. Anything
 Every lesson:
 
 - opens with where it sits on the way to the goal, and closes with what it unlocks
+- names every object when it first appears — its name and common aliases, in words — and keeps using the name in prose rather than the symbol alone; the names are what let a learner read the literature
 - cites a source for every claim, and recommends one primary source to read or watch
 - contains practice with immediate feedback — quizzes and exercises from the components
 - comes with its cards (CARDS-FORMAT.md)
@@ -122,7 +123,7 @@ The topic glossary is the vault's canonical language for the topic; every lesson
 
 ## Cards
 
-Cards are how the learning lasts past the session. Every lesson and reference sheet gets a cards file. Each card is one small fact or move, cites its source, and links to its lesson. Favour cards that make the learner produce or predict over cards that ask them to recognise. Follow CARDS-FORMAT.md. When the report lists flagged cards, rewrite each one, then mark it done with `python3 scripts/state_report.py --resolve <flag id>`.
+Cards are how the learning lasts past the session. Every lesson and reference sheet gets a cards file. Each card is one small fact or move, cites its source, and links to its lesson. Cards test understanding and vocabulary — why things hold, what follows, what things are called — rather than formulas the learner could look up. Follow CARDS-FORMAT.md. When the report lists flagged cards, rewrite each one, then mark it done with `python3 scripts/state_report.py --resolve <flag id>`.
 
 ## Practice in conversation
 
