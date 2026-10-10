@@ -97,6 +97,7 @@ a.cite {
   text-decoration: none;
   margin-left: 0.1em;
 }
+a.cite + a.cite::before { content: ","; margin-right: 0.1em; }
 ol.sources { font-size: 0.95rem; padding-left: 1.4rem; }
 ol.sources li { margin: 0.4rem 0; }
 ol.sources .loc { color: var(--muted); }
