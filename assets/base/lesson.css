@@ -1,0 +1,190 @@
+/* Base stylesheet for every lesson and reference sheet.
+   Phone first: one readable column, generous tap targets, math that scrolls
+   sideways instead of breaking the layout. Prints cleanly. */
+
+:root {
+  --ink: #1d1d1f;
+  --muted: #5f6368;
+  --paper: #fffef9;
+  --rule: #e4e1d8;
+  --accent: #8a3b12;
+  --good: #2e6b34;
+  --bad: #9b2226;
+  --panel: #f6f3ea;
+  --measure: 38rem;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #e8e6e1;
+    --muted: #a3a09a;
+    --paper: #161614;
+    --rule: #34322e;
+    --accent: #e09f6b;
+    --good: #7cc286;
+    --bad: #f08a8d;
+    --panel: #201f1c;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 1.125rem/1.6 var(--serif);
+}
+
+main {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 1.25rem 1.1rem 4rem;
+}
+
+h1, h2, h3 { font-family: var(--sans); line-height: 1.25; }
+h1 { font-size: 1.6rem; margin: 0.5rem 0 0.25rem; }
+h2 { font-size: 1.2rem; margin-top: 2.2rem; }
+h3 { font-size: 1.05rem; margin-top: 1.6rem; }
+
+a { color: var(--accent); }
+
+.kicker {
+  font: 600 0.8rem/1.4 var(--sans);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Where this lesson sits on the way to the goal, and what it unlocks. */
+.goal-link {
+  border-left: 3px solid var(--accent);
+  padding: 0.4rem 0 0.4rem 0.9rem;
+  margin: 1.2rem 0;
+  color: var(--muted);
+}
+.goal-link strong { color: var(--ink); }
+
+.definition, .theorem, .example {
+  background: var(--panel);
+  border-radius: 6px;
+  padding: 0.8rem 1rem;
+  margin: 1.2rem 0;
+}
+.definition::before, .theorem::before, .example::before {
+  display: block;
+  font: 600 0.8rem/1.4 var(--sans);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  margin-bottom: 0.3rem;
+}
+.definition::before { content: "Definition"; }
+.theorem::before { content: "Result"; }
+.example::before { content: "Example"; }
+
+/* Display math scrolls sideways on narrow screens rather than overflowing. */
+.katex-display { overflow-x: auto; overflow-y: hidden; padding: 0.2rem 0; }
+
+/* Citations: a superscript link to the numbered source list at the end. */
+a.cite {
+  font: 0.75em var(--sans);
+  vertical-align: super;
+  text-decoration: none;
+  margin-left: 0.1em;
+}
+ol.sources { font-size: 0.95rem; padding-left: 1.4rem; }
+ol.sources li { margin: 0.4rem 0; }
+ol.sources .loc { color: var(--muted); }
+
+.primary-source {
+  background: var(--panel);
+  border-radius: 6px;
+  padding: 0.8rem 1rem;
+  margin: 2rem 0 1rem;
+}
+
+/* --- Interactive pieces (behaviour in lesson.js) --- */
+
+.quiz, .exercise {
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 0.9rem 1rem;
+  margin: 1.5rem 0;
+}
+.quiz .q, .exercise .q { margin-top: 0; font-weight: 600; }
+
+.quiz ol.options { list-style: none; padding: 0; margin: 0.6rem 0 0; }
+.quiz ol.options li { margin: 0.45rem 0; }
+.quiz button.option {
+  width: 100%;
+  min-height: 2.9rem;
+  text-align: left;
+  font: inherit;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 0.5rem 0.8rem;
+  cursor: pointer;
+}
+.quiz button.option:disabled { cursor: default; }
+.quiz button.option.right { border-color: var(--good); box-shadow: inset 4px 0 0 var(--good); }
+.quiz button.option.wrong { border-color: var(--bad); box-shadow: inset 4px 0 0 var(--bad); }
+
+.explain, .exercise .answer { display: none; margin-top: 0.8rem; }
+.answered .explain, .revealed .answer { display: block; }
+
+.exercise textarea {
+  width: 100%;
+  min-height: 6rem;
+  font: 1rem/1.5 ui-monospace, "SF Mono", Menlo, monospace;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 0.6rem;
+}
+.exercise .actions, .exercise .selfgrade { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.7rem; }
+.exercise .selfgrade { display: none; }
+.revealed .selfgrade { display: flex; }
+.exercise button {
+  min-height: 2.6rem;
+  font: 600 0.95rem var(--sans);
+  color: var(--ink);
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+}
+.exercise .selfgrade button.chosen { border-color: var(--accent); }
+
+details.hint { margin-top: 0.6rem; color: var(--muted); }
+details.hint summary { cursor: pointer; font-family: var(--sans); font-size: 0.95rem; }
+
+.ask-tutor { color: var(--muted); font-style: italic; margin-top: 2rem; }
+
+nav.lesson-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+  font-family: var(--sans);
+  font-size: 0.95rem;
+}
+
+@media print {
+  :root { --paper: #fff; --ink: #000; --panel: #f3f3f3; }
+  main { max-width: none; padding: 0; }
+  .quiz button.option { border-color: #999; }
+  .explain, .exercise .answer { display: block; }
+  .exercise textarea, .exercise .actions, .exercise .selfgrade, nav.lesson-nav { display: none; }
+  a { color: inherit; }
+}

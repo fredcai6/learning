@@ -10,3 +10,27 @@ cards, learner records — lives in a separate private vault, and secrets live
 in `.env` on the machine running it.
 
 See [PLAN.md](PLAN.md) for the design.
+
+## Setup
+
+```bash
+# Create a vault (its own private repo) and say where archived source copies go.
+python3 skill/teach/scripts/init_vault.py ../learning-vault --archive-dir /path/outside/the/vault
+
+# Install the skill for Claude Code.
+ln -s "$PWD/skill/teach" ~/.claude/skills/teach
+```
+
+Then, from the vault: `/teach <learner> <topic>`.
+
+## Checking a vault
+
+```bash
+python3 skill/teach/scripts/check.py ~/projects/learning-vault
+uvx pytest tests      # the checker's own tests
+```
+
+## Licence
+
+MIT. Third-party pieces and their licences are listed in
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
