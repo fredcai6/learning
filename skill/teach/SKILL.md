@@ -38,7 +38,7 @@ Sources, the map, lessons, reference sheets, cards and glossaries are shared: a 
 1. **Identify the learner.** Take them from the argument if given; otherwise ask, offering the names in `learners.toml`. A new learner gets an entry there and a `learners/<learner>/` directory.
 2. **Identify the topic.** Topics are dash-case directory names under `topics/`. A new topic gets its directory created when its first file is written.
 3. **Read before teaching:** the learner's `NOTES.md`, their `MISSION.md` and `route.toml` for this topic, their five most recent records, the topic's `glossary.md`, and the list of lessons already written. Read the other learner's route for this topic too, if one exists — a lesson they already have may be the right one to point to.
-4. **Read what they did on the website:** `python3 scripts/state_report.py <learner>` — lessons opened, quiz and exercise results, cards they keep forgetting (grouped by node), and cards flagged as bad. This is the strongest evidence you have: let it move route states, and let forgotten nodes shape what you teach next.
+4. **Read what they did on the website:** `python3 scripts/state_report.py <learner>` — lessons opened, quiz and exercise results, cards they keep forgetting (grouped by node), cards flagged as bad, and questions the tutor bot could not answer from the sources. This is the strongest evidence you have: let it move route states, and let forgotten nodes shape what you teach next.
 5. **No mission yet?** Run the mission interview below before anything else. Teaching without a mission produces abstract lessons and no way to judge what comes next.
 
 ## The mission interview
@@ -65,7 +65,7 @@ Before the first lesson on any node, find the best sources for it and record the
 - **Archive a copy wherever text exists:** `python3 scripts/archive.py <source-id> <url-or-file>` saves the file to the vault's `archive_dir` and extracts its text for the tutor. Copies stay on the data drive; the vault repo holds only the record.
 - **Video:** a record with the link and the timestamps of the useful stretches. Good video lectures are worth finding alongside the texts.
 - **Communities** (where to test understanding against people) are sources too, with `kind = "community"`.
-- **Gaps:** when nothing good covers what the mission needs, say so in the route's `gaps` list. Gaps drive the next search.
+- **Gaps:** when nothing good covers what the mission needs, say so in the route's `gaps` list. Gaps drive the next search. Questions the tutor could not answer arrive in the state report: research them, cover them in a source or a lesson, then `python3 scripts/state_report.py --resolve-gap <id>`.
 
 Prune a source that turns out wrong, shallow or off-mission; update every citation to it.
 

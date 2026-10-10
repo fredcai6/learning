@@ -105,3 +105,55 @@ class State:
     def open_flags(self) -> set[str]:
         with self.connect() as db:
             return {r["card_id"] for r in db.execute("SELECT card_id FROM card_flag WHERE resolved_at IS NULL")}
+
+    # --- tutor ----------------------------------------------------------------
+
+    def add_message(self, learner: str, lesson_id: str | None, role: str, content: str, photo: bool = False) -> int:
+        with self.connect() as db:
+            cur = db.execute("INSERT INTO tutor_message (learner, lesson_id, role, content, photo, at) VALUES (?,?,?,?,?,?)",
+                             (learner, lesson_id, role, content, int(photo), iso(now())))
+            return cur.lastrowid
+
+    def conversation(self, learner: str, lesson_id: str, since: str, limit: int) -> list[sqlite3.Row]:
+        """The latest `limit` messages about this lesson since the focus began, oldest first."""
+        with self.connect() as db:
+            rows = db.execute("SELECT role, content FROM tutor_message WHERE learner = ? AND lesson_id = ? AND at >= ? "
+                              "ORDER BY id DESC LIMIT ?", (learner, lesson_id, since, limit)).fetchall()
+        return list(reversed(rows))
+
+    def messages(self, learner: str, limit: int = 200) -> list[sqlite3.Row]:
+        with self.connect() as db:
+            rows = db.execute("SELECT id, lesson_id, role, content, photo, at FROM tutor_message WHERE learner = ? "
+                              "ORDER BY id DESC LIMIT ?", (learner, limit)).fetchall()
+        return list(reversed(rows))
+
+    def set_focus(self, learner: str, lesson_id: str) -> None:
+        with self.connect() as db:
+            db.execute("INSERT INTO tutor_focus (learner, lesson_id, since) VALUES (?,?,?) ON CONFLICT (learner) "
+                       "DO UPDATE SET lesson_id = excluded.lesson_id, since = excluded.since",
+                       (learner, lesson_id, iso(now())))
+
+    def focus(self, learner: str) -> sqlite3.Row | None:
+        with self.connect() as db:
+            return db.execute("SELECT lesson_id, since FROM tutor_focus WHERE learner = ?", (learner,)).fetchone()
+
+    def last_viewed_lesson(self, learner: str) -> str | None:
+        with self.connect() as db:
+            row = db.execute("SELECT lesson_id FROM lesson_event WHERE learner = ? AND kind = 'view' "
+                             "ORDER BY id DESC LIMIT 1", (learner,)).fetchone()
+        return row["lesson_id"] if row else None
+
+    def add_gap(self, learner: str, lesson_id: str | None, question: str, note: str | None) -> None:
+        with self.connect() as db:
+            db.execute("INSERT INTO tutor_gap (learner, lesson_id, question, note, at) VALUES (?,?,?,?,?)",
+                       (learner, lesson_id, question, note, iso(now())))
+
+    def poked_on(self, learner: str) -> str | None:
+        with self.connect() as db:
+            row = db.execute("SELECT day FROM tutor_poke WHERE learner = ?", (learner,)).fetchone()
+        return row["day"] if row else None
+
+    def mark_poked(self, learner: str, day: str) -> None:
+        with self.connect() as db:
+            db.execute("INSERT INTO tutor_poke (learner, day) VALUES (?,?) ON CONFLICT (learner) DO UPDATE SET day = excluded.day",
+                       (learner, day))

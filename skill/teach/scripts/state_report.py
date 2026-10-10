@@ -4,10 +4,13 @@
 Usage:
   python3 state_report.py LEARNER [--vault DIR] [--days 30]
   python3 state_report.py --resolve FLAG_ID [--vault DIR]
+  python3 state_report.py --resolve-gap GAP_ID [--vault DIR]
 
 Reads the state database named by `state_db` in vault.toml: lessons opened,
-quiz and exercise results, review performance by card and node, and cards
-flagged as bad. `--resolve` marks a flag done once its card is rewritten.
+quiz and exercise results, review performance by card and node, cards
+flagged as bad, and questions the tutor bot could not answer from the
+sources. `--resolve` marks a flag done once its card is rewritten;
+`--resolve-gap` marks a gap done once a source or lesson covers it.
 Standard library only.
 """
 
@@ -96,6 +99,25 @@ def report(db: sqlite3.Connection, vault: Path, learner: str, days: int) -> None
                 print(f"  - {cid} ×{n}")
             print("- forgetting by node: " + ", ".join(f"{node} ×{n}" for node, n in by_node.most_common()))
 
+    print("\n## Tutor questions the sources could not answer (cover, then --resolve-gap ID)")
+    try:
+        gaps = db.execute("SELECT id, lesson_id, question, note, at FROM tutor_gap WHERE learner = ? AND resolved_at IS NULL "
+                          "ORDER BY at", (learner,)).fetchall()
+    except sqlite3.OperationalError:
+        gaps = []
+    if not gaps:
+        print("- none")
+    for g in gaps:
+        print(f"- [{g['id']}] {g['note'] or g['question'][:120]} (on {g['lesson_id']}, {g['at'][:10]})")
+
+    try:
+        talk = db.execute("SELECT COUNT(*) AS n, COUNT(DISTINCT lesson_id) AS lessons FROM tutor_message "
+                          "WHERE learner = ? AND role = 'learner' AND at >= ?", (learner, since)).fetchone()
+        print(f"\n## Tutor chat\n- {talk['n']} messages from the learner across {talk['lessons']} lesson(s); "
+              "read them on the site's Tutor page or in tutor_message")
+    except sqlite3.OperationalError:
+        pass
+
     print("\n## Flagged cards (rewrite, then resolve with --resolve ID)")
     flags = db.execute("SELECT id, learner, card_id, note, at FROM card_flag WHERE resolved_at IS NULL ORDER BY at").fetchall()
     if not flags:
@@ -111,6 +133,7 @@ def main() -> int:
     parser.add_argument("--vault", default=".")
     parser.add_argument("--days", type=int, default=30)
     parser.add_argument("--resolve", type=int, metavar="FLAG_ID")
+    parser.add_argument("--resolve-gap", type=int, metavar="GAP_ID")
     args = parser.parse_args()
     vault = Path(args.vault).resolve()
     db = connect(vault)
@@ -119,6 +142,12 @@ def main() -> int:
             n = db.execute("UPDATE card_flag SET resolved_at = ? WHERE id = ? AND resolved_at IS NULL",
                            (datetime.now(timezone.utc).isoformat(), args.resolve)).rowcount
         print(f"resolved flag {args.resolve}" if n else f"no open flag {args.resolve}")
+        return 0 if n else 1
+    if args.resolve_gap is not None:
+        with db:
+            n = db.execute("UPDATE tutor_gap SET resolved_at = ? WHERE id = ? AND resolved_at IS NULL",
+                           (datetime.now(timezone.utc).isoformat(), args.resolve_gap)).rowcount
+        print(f"resolved gap {args.resolve_gap}" if n else f"no open gap {args.resolve_gap}")
         return 0 if n else 1
     if not args.learner:
         parser.error("name a learner, or pass --resolve")

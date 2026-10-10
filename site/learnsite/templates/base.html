@@ -21,7 +21,7 @@
 {% block body %}{% endblock %}
 </main>
 <nav class="tabs" aria-label="Sections">
-  {% set tabs = [("/", "Today"), ("/review", "Review"), ("/lessons", "Lessons"), ("/map", "Map"), ("/log", "Log")] %}
+  {% set tabs = [("/", "Today"), ("/review", "Review"), ("/lessons", "Lessons"), ("/map", "Map"), ("/chat", "Tutor"), ("/log", "Log")] %}
   {% for href, label in tabs %}
   <a href="{{ base }}{{ href }}"{% if path == href or (href != "/" and path.startswith(href)) %} aria-current="page"{% endif %}>{{ label }}</a>
   {% endfor %}

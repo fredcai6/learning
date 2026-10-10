@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Tutor{% endblock %}
+{% block body %}
+<h1>Tutor</h1>
+<p class="muted small">Your conversation with the tutor bot, with the math rendered.</p>
+{% set ns = namespace(lesson=None) %}
+{% for m in rows %}
+{% if m.lesson_id != ns.lesson %}{% set ns.lesson = m.lesson_id %}
+<p class="kicker chat-lesson">{{ titles.get(m.lesson_id, m.lesson_id or "No lesson") }}</p>
+{% endif %}
+<div class="msg {{ m.role }}" id="m{{ m.id }}">
+  {% if m.photo %}<p class="muted small">From a photo</p>{% endif %}
+  {{ m.content | markdown }}
+  <p class="muted small when">{{ m.at[:16] | replace("T", " ") }} UTC</p>
+</div>
+{% else %}
+<p class="muted">No conversation yet. Message the tutor bot on Telegram.</p>
+{% endfor %}
+{% endblock %}

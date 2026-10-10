@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import copy
+import html
+import re
 import logging
 import mimetypes
 import os
@@ -86,6 +88,22 @@ def human_interval(delta: timedelta) -> str:
     return f"{days / 365:.1f}y"
 
 
+MATH = re.compile(r"\$\$.+?\$\$|\\\[.+?\\\]|\$[^$\n]+?\$|\\\(.+?\\\)", re.S)
+
+
+def markdown_with_math(text: str) -> str:
+    """Markdown that leaves LaTeX alone: math is set aside, the rest rendered, math put back escaped.
+    Without this, markdown reads the underscores and asterisks inside math as emphasis."""
+    spans: list[str] = []
+
+    def hold(match: re.Match) -> str:
+        spans.append(match.group(0))
+        return f"\x00{len(spans) - 1}\x00"
+
+    rendered = md.markdown(MATH.sub(hold, text), extensions=["tables"])
+    return re.sub("\x00(\\d+)\x00", lambda m: html.escape(spans[int(m.group(1))], quote=False), rendered)
+
+
 def safe_child(root: Path, relative: str) -> Path | None:
     """The file at root/relative, or None if it is missing or escapes root."""
     target = (root / relative).resolve()
@@ -105,7 +123,7 @@ def create_app(settings: Settings | None = None) -> Starlette:
                     settings.dev_learner)
 
     env = Environment(loader=PackageLoader("learnsite"), autoescape=select_autoescape())
-    env.filters["markdown"] = lambda text: Markup(md.markdown(text or "", extensions=["tables"]))
+    env.filters["markdown"] = lambda text: Markup(markdown_with_math(text or ""))
 
     def render(request: Request, template: str, **context) -> HTMLResponse:
         context.update(base=settings.base_url, learner=request.state.learner,
@@ -288,6 +306,12 @@ def create_app(settings: Settings | None = None) -> Starlette:
         return render(request, "log.html", records=records, days=days, peak=max([d["n"] for d in days] + [1]),
                       total=len(reviews), recalled=recalled, missions=missions)
 
+    async def chat_page(request: Request):
+        me = request.state.learner
+        titles = {l.id: l.title for l in vault.lessons()}
+        rows = state.messages(me.id)
+        return render(request, "chat.html", rows=rows, titles=titles)
+
     # --- lesson files and their results --------------------------------------
 
     async def topic_file(request: Request):
@@ -340,6 +364,7 @@ def create_app(settings: Settings | None = None) -> Starlette:
         Route("/sources", sources_page),
         Route("/sources/{source_id}/copy", source_copy),
         Route("/log", log_page),
+        Route("/chat", chat_page),
         Route("/topics/{path:path}", topic_file),
         Route("/assets/base/{path:path}", base_asset),
         Route("/assets/{path:path}", vault_asset),

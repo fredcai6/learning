@@ -52,7 +52,46 @@ services:
       retries: 3
       start_period: 10s
 
+  # The tutor bot: same image, different command. Not on the site network:
+  # it needs the internet (Telegram's API, long polling — nothing inbound) and
+  # the local model on the host, and the site needs neither from it.
+  tutor:
+    image: learning-site
+    container_name: learn-tutor
+    command: ["python", "-m", "learnsite.tutor"]
+    restart: unless-stopped
+    user: "${LEARN_UID:-1000}:${LEARN_GID:-1000}"
+    depends_on:
+      - learn            # builds the shared image first
+    networks:
+      - tutor
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ${LEARN_VAULT_DIR:?set LEARN_VAULT_DIR}:/vault:ro
+      - ${LEARN_ARCHIVE_DIR:?set LEARN_ARCHIVE_DIR}:/archive:ro
+      - ${LEARN_STATE_DIR:?set LEARN_STATE_DIR}:/state
+    environment:
+      LEARN_VAULT: /vault
+      LEARN_ARCHIVE: /archive
+      LEARN_STATE_DB: /state/learning.sqlite
+      LEARN_TELEGRAM_TOKEN: ${LEARN_TELEGRAM_TOKEN:?set LEARN_TELEGRAM_TOKEN}
+      LEARN_LLM_URL: ${LEARN_LLM_URL:-http://host.docker.internal:8005/v1}
+      LEARN_PUBLIC_URL: ${LEARN_PUBLIC_URL:?set LEARN_PUBLIC_URL}
+      LEARN_TZ: ${LEARN_TZ:-UTC}
+      LEARN_POKE_HOUR: ${LEARN_POKE_HOUR:-18}
+      LEARN_NEW_PER_DAY: ${LEARN_NEW_PER_DAY:-10}
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
 networks:
+  tutor:
+    driver: bridge
   site:
     external: true
     name: ${LEARN_SITE_NETWORK:?set LEARN_SITE_NETWORK to the proxy stack's internal network}
