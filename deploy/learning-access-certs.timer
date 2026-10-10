@@ -1,0 +1,10 @@
+[Unit]
+Description=Daily refresh of Cloudflare Access signing keys for the learning site
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=1d
+Persistent=true
+
+[Install]
+WantedBy=timers.target

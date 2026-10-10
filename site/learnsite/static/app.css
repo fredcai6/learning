@@ -1,0 +1,119 @@
+/* App pages: the lesson stylesheet plus a bottom tab bar and review cards. */
+
+body.app main { padding-bottom: calc(5rem + env(safe-area-inset-bottom)); }
+
+.muted { color: var(--muted); }
+.small { font-size: 0.9rem; }
+.big { font: 600 1.15rem/1.35 var(--sans); margin: 0.2rem 0; }
+
+.panel {
+  background: var(--panel);
+  border-radius: 8px;
+  padding: 0.9rem 1rem;
+  margin: 1rem 0;
+}
+.panel p { margin: 0.3rem 0; }
+
+.button, summary.button {
+  display: inline-block;
+  min-height: 2.8rem;
+  padding: 0.65rem 1.1rem;
+  margin-top: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink);
+  font: 600 1rem/1.4 var(--sans);
+  text-decoration: none;
+  cursor: pointer;
+}
+.button.primary, summary.button.primary { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+summary.button { list-style: none; }
+summary.button::-webkit-details-marker { display: none; }
+
+nav.tabs {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  display: flex;
+  justify-content: space-around;
+  background: var(--paper);
+  border-top: 1px solid var(--rule);
+  padding: 0.3rem 0 calc(0.3rem + env(safe-area-inset-bottom));
+  font: 600 0.85rem var(--sans);
+}
+nav.tabs a {
+  flex: 1;
+  text-align: center;
+  padding: 0.75rem 0;
+  color: var(--muted);
+  text-decoration: none;
+}
+nav.tabs a[aria-current="page"] { color: var(--accent); }
+
+/* Review */
+.card {
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 1.2rem 1rem;
+  margin: 1rem 0;
+  min-height: 12rem;
+}
+.card .front { font-size: 1.2rem; }
+.card details.back[open] summary { display: none; }
+.card .answer-text {
+  font-size: 1.15rem;
+  border-top: 1px solid var(--rule);
+  margin-top: 1rem;
+  padding-top: 1rem;
+}
+.ratings { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem; margin-top: 1rem; }
+.rating {
+  min-height: 3.6rem;
+  border-radius: 8px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink);
+  font: 600 0.95rem/1.2 var(--sans);
+  cursor: pointer;
+}
+.rating span { display: block; font-weight: 400; font-size: 0.8rem; color: var(--muted); }
+.rating.r1 { border-color: var(--bad); }
+.rating.r3 { border-color: var(--good); }
+details.flag { margin-top: 2rem; color: var(--muted); font-size: 0.95rem; }
+details.flag summary { cursor: pointer; }
+details.flag textarea {
+  width: 100%;
+  min-height: 4rem;
+  margin-top: 0.6rem;
+  font: inherit;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 0.5rem;
+}
+
+/* Lists, map, log */
+ol.list, ul.list { padding-left: 1.2rem; }
+ol.list li, ul.list li { margin: 0.6rem 0; }
+li.unopened a { font-weight: 600; }
+
+ol.route { list-style: none; padding: 0; }
+ol.route li { border-left: 4px solid var(--rule); padding: 0.4rem 0 0.4rem 0.8rem; margin: 0.9rem 0; }
+ol.route li.state-solid { border-color: var(--good); }
+ol.route li.state-working { border-color: color-mix(in srgb, var(--good) 55%, var(--rule)); }
+ol.route li.state-shaky { border-color: var(--accent); }
+.node-head { display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; }
+.node-title { font: 600 1rem var(--sans); }
+.pill { font: 600 0.75rem var(--sans); color: var(--muted); border: 1px solid var(--rule); border-radius: 99px; padding: 0.1rem 0.5rem; white-space: nowrap; }
+.why { margin: 0.3rem 0; }
+
+.bars { display: flex; align-items: flex-end; gap: 3px; height: 5rem; margin: 0.6rem 0; }
+.bar { flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; }
+.bar span { display: block; width: 100%; min-height: 2px; background: var(--accent); border-radius: 2px 2px 0 0; }
+.bar em { font: 0.7rem var(--sans); font-style: normal; color: var(--muted); margin-top: 2px; }
+
+.record { border-bottom: 1px solid var(--rule); padding: 0.4rem 0 0.8rem; }
+.record h1 { font-size: 1.05rem; margin: 0.2rem 0; }
+details.mission { margin-top: 1.5rem; }
+details.mission summary { cursor: pointer; font: 600 1rem var(--sans); }

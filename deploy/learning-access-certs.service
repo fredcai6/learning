@@ -1,0 +1,6 @@
+[Unit]
+Description=Refresh Cloudflare Access signing keys for the learning site
+
+[Service]
+Type=oneshot
+ExecStart=%h/projects/learning/deploy/fetch-access-certs.sh %h/projects/learning/deploy/.env

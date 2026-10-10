@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fffef9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#161614" media="(prefers-color-scheme: dark)">
+  <title>{% block title %}Learning{% endblock %}</title>
+  <link rel="manifest" href="{{ base }}/static/manifest.webmanifest">
+  <link rel="icon" href="{{ base }}/static/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="{{ base }}/static/icon-180.png">
+  <link rel="stylesheet" href="{{ base }}/assets/base/katex/katex.min.css">
+  <link rel="stylesheet" href="{{ base }}/assets/base/lesson.css">
+  <link rel="stylesheet" href="{{ base }}/static/app.css">
+  <script defer src="{{ base }}/assets/base/katex/katex.min.js"></script>
+  <script defer src="{{ base }}/assets/base/katex/auto-render.min.js"></script>
+  <script defer src="{{ base }}/assets/base/lesson.js"></script>
+</head>
+<body class="app">
+<main>
+{% block body %}{% endblock %}
+</main>
+<nav class="tabs" aria-label="Sections">
+  {% set tabs = [("/", "Today"), ("/review", "Review"), ("/lessons", "Lessons"), ("/map", "Map"), ("/log", "Log")] %}
+  {% for href, label in tabs %}
+  <a href="{{ base }}{{ href }}"{% if path == href or (href != "/" and path.startswith(href)) %} aria-current="page"{% endif %}>{{ label }}</a>
+  {% endfor %}
+</nav>
+</body>
+</html>

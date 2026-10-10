@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Log{% endblock %}
+{% block body %}
+<h1>Log</h1>
+
+<section class="panel">
+  <p class="kicker">Reviews, last two weeks</p>
+  <div class="bars" role="img" aria-label="{{ total }} reviews in the last two weeks">
+    {% for d in days %}
+    <div class="bar" title="{{ d.date }}: {{ d.n }}"><span style="height: {{ (d.n / peak * 100) | round(0) }}%"></span><em>{{ d.label }}</em></div>
+    {% endfor %}
+  </div>
+  <p class="muted">{{ total }} reviews{% if total %} · recalled {{ recalled }} of {{ total }}{% endif %}</p>
+</section>
+
+<h2>What you've learned</h2>
+{% for r in records %}
+<article class="record">
+  <p class="kicker">{{ r.topic | replace("-", " ") }} · {{ r.name[:4] }}</p>
+  {{ r.body | markdown }}
+</article>
+{% else %}
+<p class="muted">No learning records yet.</p>
+{% endfor %}
+
+{% for topic, mission in missions.items() if mission %}
+<details class="mission">
+  <summary>Mission: {{ topic | replace("-", " ") }}</summary>
+  {{ mission | markdown }}
+</details>
+{% endfor %}
+{% endblock %}

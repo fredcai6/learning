@@ -2,15 +2,47 @@
 // and worked exercises. Loaded with `defer`; no inline script anywhere, so the
 // site can serve lessons under `script-src 'self'`.
 //
-// Each answered quiz or self-graded exercise dispatches a `learning:result`
-// event on document. Nothing listens yet; the website will, to save results.
+// Opening a lesson, answering a quiz, and grading an exercise are each sent
+// to the website's api/result, which saves them for the learner. Opened as a
+// local file, or from a plain file server, the send fails quietly and the
+// lesson works the same.
 
 (function () {
   "use strict";
 
+  // The site root is two levels above this script (assets/base/lesson.js).
+  var script = document.currentScript;
+  var siteRoot = script ? new URL("../../", script.src) : null;
+  var served = location.protocol === "http:" || location.protocol === "https:";
+
+  function lessonId() {
+    var meta = document.querySelector('meta[name="lesson-id"]');
+    return meta ? meta.content : null;
+  }
+
   function emit(detail) {
-    detail.lesson = document.querySelector('meta[name="lesson-id"]')?.content || null;
+    detail.lesson = lessonId();
     document.dispatchEvent(new CustomEvent("learning:result", { detail: detail }));
+    if (!served || !siteRoot || !detail.lesson) return;
+    fetch(new URL("api/result", siteRoot), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(detail),
+      credentials: "same-origin",
+      keepalive: true,
+    }).catch(function () {});
+  }
+
+  // A small way back to the app from a lesson.
+  function addHomeLink() {
+    if (!served || !siteRoot || !lessonId()) return;
+    var main = document.querySelector("main");
+    if (!main) return;
+    var link = document.createElement("a");
+    link.href = siteRoot.href;
+    link.className = "home-link";
+    link.textContent = "← Learning";
+    main.insertBefore(link, main.firstChild);
   }
 
   function renderMath() {
@@ -83,6 +115,8 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     renderMath();
+    addHomeLink();
+    if (lessonId()) emit({ kind: "view" });
     document.querySelectorAll(".quiz").forEach(setUpQuiz);
     document.querySelectorAll(".exercise").forEach(setUpExercise);
   });

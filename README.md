@@ -23,6 +23,22 @@ ln -s "$PWD/skill/teach" ~/.claude/skills/teach
 
 Then, from the vault: `/teach <learner> <topic>`.
 
+## The website
+
+`site/` is the website: lessons, reviews (FSRS), the map, sources and a log,
+per learner. `deploy/compose.yml` runs it as one more app behind an existing
+Caddy + Cloudflare tunnel stack, on that stack's internal network with no
+route out. Sign-in is Cloudflare Access; the app verifies Access's token
+itself and refuses anything without one. Access's signing keys reach the
+container as a file, refreshed daily by `deploy/fetch-access-certs.sh` on the
+host.
+
+```bash
+cp deploy/.env.example deploy/.env      # fill it in
+docker compose -f deploy/compose.yml --env-file deploy/.env up -d --build
+cd site && uv run --group dev pytest    # the site's tests
+```
+
 ## Before the website: lessons on the home network
 
 ```bash

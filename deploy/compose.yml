@@ -1,0 +1,58 @@
+# The learning website, as one more app behind an existing Caddy + Cloudflare
+# tunnel stack. It joins that stack's internal network and nothing else:
+#
+#   * no published ports — reachable only from the proxy on that network;
+#   * no route to the internet (the network is internal) — Access's signing
+#     keys arrive as a file, refreshed by fetch-access-certs.sh on the host;
+#   * the vault, the archive and the keys are read only; the state database's
+#     directory is the one writable mount.
+#
+#   cp deploy/.env.example deploy/.env    # fill it in
+#   docker compose -f deploy/compose.yml --env-file deploy/.env up -d --build
+
+name: learning
+
+services:
+  learn:
+    build:
+      context: ..
+      dockerfile: site/Dockerfile
+    image: learning-site
+    container_name: learn
+    restart: unless-stopped
+    user: "${LEARN_UID:-1000}:${LEARN_GID:-1000}"
+    networks:
+      - site
+    volumes:
+      - ${LEARN_VAULT_DIR:?set LEARN_VAULT_DIR}:/vault:ro
+      - ${LEARN_ARCHIVE_DIR:?set LEARN_ARCHIVE_DIR}:/archive:ro
+      - ${LEARN_STATE_DIR:?set LEARN_STATE_DIR}:/state
+      - ${LEARN_CERTS_DIR:?set LEARN_CERTS_DIR}:/certs:ro
+    environment:
+      LEARN_VAULT: /vault
+      LEARN_ARCHIVE: /archive
+      LEARN_STATE_DB: /state/learning.sqlite
+      LEARN_ACCESS_CERTS: /certs/certs.json
+      LEARN_ACCESS_AUD: ${LEARN_ACCESS_AUD:-}
+      LEARN_ACCESS_ISSUER: ${LEARN_ACCESS_ISSUER:-}
+      LEARN_BASE_URL: ${LEARN_BASE_URL:-/learn}
+      LEARN_TZ: ${LEARN_TZ:-UTC}
+      LEARN_NEW_PER_DAY: ${LEARN_NEW_PER_DAY:-10}
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/healthz', timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+networks:
+  site:
+    external: true
+    name: ${LEARN_SITE_NETWORK:?set LEARN_SITE_NETWORK to the proxy stack's internal network}

@@ -28,6 +28,7 @@ def main() -> int:
     parser.add_argument("vault")
     parser.add_argument("--archive-dir", required=True,
                         help="where archived source copies live; outside the vault repo")
+    parser.add_argument("--state-db", help="the website's state database; outside the vault repo")
     args = parser.parse_args()
 
     vault = Path(args.vault).expanduser().resolve()
@@ -39,7 +40,10 @@ def main() -> int:
         (vault / sub).mkdir(parents=True, exist_ok=True)
     archive_dir.mkdir(parents=True, exist_ok=True)
 
-    write_if_missing(vault / "vault.toml", f'archive_dir = "{archive_dir}"\n')
+    settings = f'archive_dir = "{archive_dir}"\n'
+    if args.state_db:
+        settings += f'state_db = "{Path(args.state_db).expanduser().resolve()}"\n'
+    write_if_missing(vault / "vault.toml", settings)
     write_if_missing(vault / "learners.toml",
                      "# One table per learner. The id is the directory name under learners/.\n"
                      "#\n"

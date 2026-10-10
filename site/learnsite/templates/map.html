@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Map{% endblock %}
+{% block body %}
+<h1>Map</h1>
+{% for t in topics %}
+<h2>{{ t.name | replace("-", " ") | capitalize }}</h2>
+{% if t.goal %}<p class="goal-link"><strong>Goal:</strong> {{ t.goal }}</p>{% endif %}
+<ol class="route">
+  {% for r in t.rows %}
+  <li class="state-{{ r.entry.state }}">
+    <div class="node-head">
+      <span class="node-title">{{ r.node.get("title", r.entry.id) }}</span>
+      <span class="pill">{{ state_labels.get(r.entry.state, r.entry.state) }}</span>
+    </div>
+    <p class="why">{{ r.entry.why }}</p>
+    {% if r.others %}<p class="muted small">{% for name, s in r.others.items() %}{{ name }}: {{ state_labels.get(s, s) }}{% if not loop.last %} · {% endif %}{% endfor %}</p>{% endif %}
+    {% if r.lessons %}<p class="small">{% for l in r.lessons %}<a href="{{ base }}/{{ l.href }}">{{ l.title }}</a>{% if not loop.last %} · {% endif %}{% endfor %}</p>{% endif %}
+  </li>
+  {% endfor %}
+</ol>
+{% if t.connections %}
+<h3>Connections</h3>
+<ul class="list">
+  {% for c in t.connections %}<li><strong>{{ c.to }}</strong> <span class="muted small">{{ "you know this" if c.kind == "knows" else "curious" }}</span><br>{{ c.how }}</li>{% endfor %}
+</ul>
+{% endif %}
+{% if t.gaps %}
+<h3>Gaps in the sources</h3>
+<ul class="list">{% for g in t.gaps %}<li>{{ g }}</li>{% endfor %}</ul>
+{% endif %}
+{% else %}
+<p class="muted">No route yet. Your first teaching session sets one up.</p>
+{% endfor %}
+{% endblock %}

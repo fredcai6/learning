@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Sources{% endblock %}
+{% block body %}
+<h1>Sources</h1>
+{% for s in sources %}
+<section class="panel source">
+  <p class="kicker">{{ s.kind }}{% if s.year %} · {{ s.year }}{% endif %}</p>
+  <p class="big">{% if s.url %}<a href="{{ s.url }}" rel="noopener noreferrer">{{ s.title }}</a>{% else %}{{ s.title }}{% endif %}</p>
+  {% if s.authors %}<p class="muted">{{ s.authors | join(", ") }}</p>{% endif %}
+  <p><strong>Why trusted:</strong> {{ s.trust }}</p>
+  <p><strong>Use for:</strong> {{ s.use_for }}</p>
+  {% if s.timestamps %}
+  <ul class="list small">{% for t in s.timestamps %}<li><strong>{{ t.at }}</strong> — {{ t.covers }}</li>{% endfor %}</ul>
+  {% endif %}
+  {% if s.has_copy %}<p><a class="button" href="{{ base }}/sources/{{ s.id }}/copy">Open archived copy</a></p>{% endif %}
+</section>
+{% else %}
+<p class="muted">No sources yet.</p>
+{% endfor %}
+{% endblock %}

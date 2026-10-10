@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Lessons{% endblock %}
+{% block body %}
+<h1>Lessons</h1>
+{% for t in topics %}
+<h2>{{ t.name | replace("-", " ") | capitalize }}</h2>
+<ol class="list">
+  {% for i in t.entries %}
+  <li class="{{ 'opened' if i.opened else 'unopened' }}">
+    <a href="{{ base }}/{{ i.lesson.href }}">{{ i.lesson.title }}</a>
+    <span class="muted small">
+      {% if i.lesson.kind == "reference" %}reference{% elif not i.opened %}not opened{% endif %}
+      {% if i.quiz_total %} · quizzes {{ i.quiz_right }}/{{ i.quiz_total }}{% endif %}
+      {% for grade, n in i.exercises.items() %} · {{ n }} {{ grade }}{% endfor %}
+    </span>
+  </li>
+  {% endfor %}
+</ol>
+{% else %}
+<p class="muted">No lessons yet.</p>
+{% endfor %}
+<p><a href="{{ base }}/sources">Sources →</a></p>
+{% endblock %}

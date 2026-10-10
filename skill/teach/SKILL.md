@@ -13,7 +13,7 @@ Formats live in this skill's folder (`*-FORMAT.md`). Scripts live in `scripts/` 
 The vault is the directory holding `vault.toml`. It is normally the current directory; if it is not, ask the learner where it is. The vault is a git repo, and it is shared by every learner in it.
 
 ```
-vault.toml                     settings: archive_dir (where archived source copies live)
+vault.toml                     settings: archive_dir (archived source copies), state_db (the website's database)
 learners.toml                  who the learners are
 sources/<id>.md                one record per source — SOURCE-FORMAT.md
 map/<node>.md                  one file per concept, shared across topics — MAP-FORMAT.md
@@ -38,7 +38,8 @@ Sources, the map, lessons, reference sheets, cards and glossaries are shared: a 
 1. **Identify the learner.** Take them from the argument if given; otherwise ask, offering the names in `learners.toml`. A new learner gets an entry there and a `learners/<learner>/` directory.
 2. **Identify the topic.** Topics are dash-case directory names under `topics/`. A new topic gets its directory created when its first file is written.
 3. **Read before teaching:** the learner's `NOTES.md`, their `MISSION.md` and `route.toml` for this topic, their five most recent records, the topic's `glossary.md`, and the list of lessons already written. Read the other learner's route for this topic too, if one exists — a lesson they already have may be the right one to point to.
-4. **No mission yet?** Run the mission interview below before anything else. Teaching without a mission produces abstract lessons and no way to judge what comes next.
+4. **Read what they did on the website:** `python3 scripts/state_report.py <learner>` — lessons opened, quiz and exercise results, cards they keep forgetting (grouped by node), and cards flagged as bad. This is the strongest evidence you have: let it move route states, and let forgotten nodes shape what you teach next.
+5. **No mission yet?** Run the mission interview below before anything else. Teaching without a mission produces abstract lessons and no way to judge what comes next.
 
 ## The mission interview
 
@@ -121,7 +122,7 @@ The topic glossary is the vault's canonical language for the topic; every lesson
 
 ## Cards
 
-Cards are how the learning lasts past the session. Every lesson and reference sheet gets a cards file. Each card is one small fact or move, cites its source, and links to its lesson. Favour cards that make the learner produce or predict over cards that ask them to recognise. Follow CARDS-FORMAT.md.
+Cards are how the learning lasts past the session. Every lesson and reference sheet gets a cards file. Each card is one small fact or move, cites its source, and links to its lesson. Favour cards that make the learner produce or predict over cards that ask them to recognise. Follow CARDS-FORMAT.md. When the report lists flagged cards, rewrite each one, then mark it done with `python3 scripts/state_report.py --resolve <flag id>`.
 
 ## Practice in conversation
 

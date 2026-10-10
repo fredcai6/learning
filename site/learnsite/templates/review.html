@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Review{% endblock %}
+{% block body %}
+<p class="kicker">Review · {{ remaining }} left{% if is_new %} · new card{% endif %}</p>
+
+<section class="card">
+  <div class="front">{{ card.front }}</div>
+  <details class="back">
+    <summary class="button primary">Show answer</summary>
+    <div class="answer-text">{{ card.back }}</div>
+    <p class="muted small">
+      {{ source.get("title", card.source) }}{% if card.loc %}, {{ card.loc }}{% endif %}
+      {% if lesson %} · <a href="{{ base }}/{{ lesson.href }}">{{ lesson.title }}</a>{% endif %}
+    </p>
+    <form method="post" action="{{ base }}/review/{{ card.id }}" class="ratings">
+      {% for o in options %}
+      <button name="rating" value="{{ o.value }}" class="rating r{{ o.value }}">{{ o.label }}<span>{{ o.after }}</span></button>
+      {% endfor %}
+    </form>
+  </details>
+</section>
+
+<details class="flag">
+  <summary>Something wrong with this card?</summary>
+  <form method="post" action="{{ base }}/flag/{{ card.id }}">
+    <textarea name="note" placeholder="What's wrong (optional)" aria-label="What is wrong with this card"></textarea>
+    <button class="button">Flag it for a rewrite</button>
+  </form>
+  <p class="muted small">It leaves your reviews until the next teaching session rewrites it.</p>
+</details>
+{% endblock %}

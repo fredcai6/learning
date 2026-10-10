@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block body %}
+<p class="kicker">{{ learner.name }}</p>
+<h1>Today</h1>
+
+<section class="panel">
+  {% if due or new %}
+  <p class="big">{{ due + new }} card{{ "" if due + new == 1 else "s" }} to review</p>
+  <p class="muted">{{ due }} due{% if new %}, {{ new }} new{% endif %}</p>
+  <a class="button primary" href="{{ base }}/review">Start reviewing</a>
+  {% elif ahead %}
+  <p class="big">Nothing due</p>
+  <p class="muted">{{ ahead }} card{{ "" if ahead == 1 else "s" }} still settling in; you can review them early.</p>
+  <a class="button" href="{{ base }}/review">Review early</a>
+  {% else %}
+  <p class="big">Nothing to review</p>
+  <p class="muted">Cards arrive once you open their lesson.</p>
+  {% endif %}
+</section>
+
+{% if next_lesson %}
+<section class="panel">
+  <p class="kicker">Next lesson</p>
+  <p class="big"><a href="{{ base }}/{{ next_lesson.href }}">{{ next_lesson.title }}</a></p>
+</section>
+{% endif %}
+
+<p class="muted">{{ reviews_week }} review{{ "" if reviews_week == 1 else "s" }} in the last week.</p>
+
+{% if others %}
+<h2>Alongside you</h2>
+{% for o in others %}
+<section class="panel">
+  <p><strong>{{ o.name }}</strong>{% if o.topics %} · {{ o.topics | join(", ") | replace("-", " ") }}{% endif %}</p>
+  <p class="muted">{{ o.reviews_week }} reviews this week · {{ o.lessons_opened }} lessons opened</p>
+</section>
+{% endfor %}
+{% endif %}
+{% endblock %}
