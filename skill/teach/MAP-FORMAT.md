@@ -27,6 +27,11 @@ One per learner per topic: `learners/<learner>/<topic>/route.toml`. The learner'
 goal = "Read Hall chapters 1-3 and do the exercises"   # short form of the mission goal
 gaps = ["No good video found yet on the adjoint representation."]   # before the first [[node]]
 
+[[connection]]
+to = "Kalman filtering"            # anything: a map node id or a topic in plain words
+kind = "knows"                     # knows | curious
+how = "The error-state filter on a rotation is a Lie group filter."
+
 [[node]]
 id = "matrix-exponential"
 state = "shaky"                  # unknown | new | shaky | working | solid
@@ -43,4 +48,5 @@ why = "The one operation the whole subject is about."
 - **Order** the nodes roughly in the order you expect to teach them. The order is a guess and will change.
 - **`why`** connects the node to this learner's goal in plain words. It is what a lesson's opening and closing draw on.
 - **`state`** comes from evidence and cites it: record filenames, or `"diagnostic"` for an answer in the mission interview not yet worth a record. `unknown` is honest; use it when evidence is thin.
+- **`connection`** records what the topic touches in the learner's wider knowledge: what they already know (`knows`) and what they want to poke at (`curious`). Lessons that meet one say so.
 - **`gaps`** lists what the mission needs that no source covers yet. It sits above the first `[[node]]`: in TOML, a key after a table header belongs to that table.

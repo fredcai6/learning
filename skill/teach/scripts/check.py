@@ -20,6 +20,7 @@ NUMBERED = re.compile(r"^\d{4}-[a-z0-9]+(?:-[a-z0-9]+)*$")
 SOURCE_KINDS = {"book", "notes", "paper", "video", "web", "course", "community"}
 NODE_STATES = {"unknown", "new", "shaky", "working", "solid"}
 CARD_KINDS = {"produce", "predict", "explain", "recall"}
+CONNECTION_KINDS = {"knows", "curious"}
 
 
 class Report:
@@ -130,6 +131,11 @@ def check_learners(root: Path, nodes: set[str], report: Report) -> None:
                 data = load_toml(route, report) or {}
                 if not data.get("goal"):
                     report.add(route, "missing goal")
+                for conn in data.get("connection", []):
+                    if not conn.get("to") or not conn.get("how"):
+                        report.add(route, "every connection needs `to` and `how`")
+                    if conn.get("kind") not in CONNECTION_KINDS:
+                        report.add(route, f"connection kind must be one of {sorted(CONNECTION_KINDS)}")
                 for entry in data.get("node", []):
                     nid = entry.get("id")
                     if nid not in nodes:

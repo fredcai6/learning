@@ -109,6 +109,7 @@ ROUTE = "learners/alex/lie-algebra/route.toml"
     (CARDS, 'loc = "Def. 3.1"', 'loc = ""', "missing loc"),
     (CARDS, 'id = "commutator-of-commuting"', 'id = "commutator-definition"', "id used twice"),
     (ROUTE, 'state = "shaky"', 'state = "mastered"', "state must be one of"),
+    (ROUTE, 'kind = "knows"', 'kind = "loves"', "connection kind must be one of"),
     (ROUTE, 'evidence = ["0003-exp-of-nilpotent.md"]', 'evidence = ["0099-gone.md"]', "is not a record"),
     ("sources/hall-2015.md", 'trust = "', 'trusted = "', "missing trust"),
     ("sources/hall-2015.md", 'archive = "hall-2015.pdf"', 'archive = "other.pdf"', "is not in"),

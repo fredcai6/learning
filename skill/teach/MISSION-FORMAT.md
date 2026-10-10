@@ -1,27 +1,22 @@
 # Mission Format
 
-`learners/<learner>/<topic>/MISSION.md` captures why this learner is learning this topic. Every teaching decision — what to teach next, which sources to surface, which exercises to design — traces back to it. Written at the end of the mission interview, in the learner's own words wherever possible.
+`learners/<learner>/<topic>/MISSION.md` captures why this learner is learning this topic. Every teaching decision — what to teach next, which sources to surface, which exercises to design — traces back to it. Written at the end of the mission interview, in the learner's own words wherever possible. Light by design: it is a compass, not a commitment.
 
 ## Template
 
 ```md
 # Mission: {Topic}
 
-## Goal
-{The learner's goal, in their words, after sharpening. Concrete: what they will be able to do, and where it shows up in their life.}
+## Where it came from
+{1-2 sentences: what brought the topic up.}
 
-## Why it matters
-{1-2 sentences from the "why" step.}
+## Practical use
+- {Something they want to be able to do with it, in their words}
+- {Or: "Understanding for its own sake" — then Connections carries the weight}
 
-## Success looks like
-- {A specific, observable thing they will be able to do}
-- {…}
-
-## First milestone
-{The smallest version of the goal that still matters, if the goal is large.}
-
-## If-then plans
-- If {moment they described}, then I will {small action}.
+## Connections
+- Already knows: {topic} — {how it seems to relate}
+- Wants to poke at: {neighbouring topic}
 
 ## Constraints
 - {Time, rhythm, preferences, anything that bounds the approach}
@@ -33,7 +28,7 @@
 ## Rules
 
 - **One mission per learner per topic.** Two unrelated goals are two topics.
-- **The learner's words, not yours.** Reflect and sharpen; keep their phrasing in Goal, Why and the if-then plans.
-- **Concrete over abstract.** "Read the first four chapters of Hall and do the exercises" beats "understand Lie theory".
+- **The learner's words, not yours.**
+- **Concrete where it can be.** "Read SE(3) in a paper and know what it means" beats "understand Lie theory"; "understanding for its own sake" is also a real answer.
 - **Revise when reality shifts**, with the learner's agreement, and write a learning record saying why.
 - **Keep it to a screen.** Past that it has become a plan, and the plan lives in `route.toml`.

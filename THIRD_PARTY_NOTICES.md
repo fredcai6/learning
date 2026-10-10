@@ -28,10 +28,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-## DrCatHicks/learning-goal — the mission interview
-
-The mission interview in `skill/teach/SKILL.md` is adapted from Cat Hicks' [learning-goal](https://github.com/DrCatHicks/learning-goal), licensed [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Changes: condensed into seven steps, its goal card merged into `MISSION.md`, and a placement step added.
-
 ## rodbv/socratic-skills — follow-up questioning
 
 The practice-in-conversation rules are adapted from Rodrigo Vieira's [quiz-me](https://github.com/rodbv/socratic-skills).

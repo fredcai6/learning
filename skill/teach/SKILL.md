@@ -42,19 +42,14 @@ Sources, the map, lessons, reference sheets, cards and glossaries are shared: a 
 
 ## The mission interview
 
-The learner writes their own goal, obstacles and plans; you ask and reflect. A goal or obstacle you suggest weakens the exercise, because self-generated content is what builds commitment. Adapted from Cat Hicks' [learning-goal](https://github.com/DrCatHicks/learning-goal) (Mental Contrasting with Implementation Intentions).
+Short and practical. Most learners want to learn a topic well and see where it fits, not reorganise their life around it, so this is a conversation about the topic and what it touches. Each step is its own turn: ask one question, then end your message. Speak in plain sentences, not lists. The learner's answers go into the mission in their words.
 
-Each step is its own turn: ask one question, then end your message. Speak in plain sentences, not lists.
+1. **Where they met it.** Ask what brought the topic up: a tool, a paper, a conversation, curiosity.
+2. **Practical use.** Ask what they would like to be able to do with it, if anything. "Nothing in particular" is a fine answer; then the goal is understanding, and the connections carry more weight.
+3. **What it touches.** Ask what they already know that this seems to connect to, and which neighbouring topics they would enjoy poking at along the way. This is the knowledge web the lessons hang the topic on.
+4. **Place them.** Ask what they already know that bears on it, then two or three short diagnostic questions to see the depth. Write each piece of established prior knowledge as a learning record.
 
-1. **Goal.** Ask what they want to be able to do, and where it shows up in their life. If it is vague, ask what they could do afterwards that they cannot do now.
-2. **Sharpen.** Find the one or two weakest of specific, observable, achievable, relevant, time-bound, and ask about those only. For a big goal, help them find a first milestone that still matters to them.
-3. **Why.** Ask what changes for them when they have it. One or two exchanges.
-4. **Obstacles.** Ask for a concrete moment they can picture where this goal would lose to something else. Push a surface answer ("no time") toward the actual moment and feeling. Then stop and wait.
-5. **If-then plans.** Ask them to turn each obstacle into "If [moment], then I will [small action]." They draft first; you ask about whether the cue is recognisable and the action small enough.
-6. **Reaffirm.** Ask whether the goal still feels right, bigger or smaller, and what the first step is.
-7. **Place them.** Ask what they already know that bears on the goal, then ask two or three short diagnostic questions to see the depth of it. Write each piece of established prior knowledge as a learning record.
-
-Then write `MISSION.md` and a first `route.toml`, and confirm both with the learner.
+Then write `MISSION.md` and a first `route.toml`, and confirm both with the learner in one message.
 
 When the mission shifts later, update `MISSION.md` with the learner's agreement and write a learning record saying why.
 
@@ -66,7 +61,7 @@ Before the first lesson on any node, find the best sources for it and record the
 
 - **Prefer primary and high-trust sources:** standard textbooks, lecture notes from university courses, papers, recognised lecturers. Annotate each with why it is trusted and what to reach for it for.
 - **Archive a copy wherever text exists:** `python3 scripts/archive.py <source-id> <url-or-file>` saves the file to the vault's `archive_dir` and extracts its text for the tutor. Copies stay on the data drive; the vault repo holds only the record.
-- **Video:** a record with the link and the timestamps of the useful stretches. The learner values good video lectures; look for them alongside the texts.
+- **Video:** a record with the link and the timestamps of the useful stretches. Good video lectures are worth finding alongside the texts.
 - **Communities** (where to test understanding against people) are sources too, with `kind = "community"`.
 - **Gaps:** when nothing good covers what the mission needs, say so in the route's `gaps` list. Gaps drive the next search.
 
@@ -75,6 +70,8 @@ Prune a source that turns out wrong, shallow or off-mission; update every citati
 ## The map and the route
 
 The map is shared concept nodes linked by "helps with" — never "requires". Real prerequisites are soft: a learner can start on Lie algebras with shaky linear algebra and come back. The route is one learner's path through the map toward their goal: the nodes that matter to their mission, the state of each, and why each one matters to that goal, in their terms.
+
+**Connections.** The route also records what the topic touches in the learner's wider knowledge: things they already know, and neighbouring topics they want to poke at. A lesson that meets one says so in a line or two ("this is the same move as …"), so the topic lands in their web of knowledge rather than in isolation. When the learner wants to follow a connection, follow it: a short detour lesson, linked back to the route, is part of the course.
 
 A node's state comes from evidence — what they answered, what they worked, what they said they know — and each state names its evidence. When evidence is thin, the state is `unknown`, and a diagnostic question is the cheapest next step.
 
@@ -146,4 +143,4 @@ When the learner says how they like to be taught, record it in their `NOTES.md` 
 
 ---
 
-Built on Matt Pocock's [`teach`](https://github.com/mattpocock/skills) skill (MIT). Mission interview adapted from Cat Hicks' [learning-goal](https://github.com/DrCatHicks/learning-goal) (CC BY 4.0). Follow-up questioning adapted from Rodrigo Vieira's [socratic-skills](https://github.com/rodbv/socratic-skills) (MIT).
+Built on Matt Pocock's [`teach`](https://github.com/mattpocock/skills) skill (MIT). Follow-up questioning adapted from Rodrigo Vieira's [socratic-skills](https://github.com/rodbv/socratic-skills) (MIT).

@@ -25,7 +25,7 @@ between the site and the bot.
 - **Matt's `/teach`**: mission, learning records, short self-contained HTML
   lessons, a shared component library, reference sheets, research before
   teaching, fluency vs storage strength.
-- **learning-goal (Cat Hicks)**: a more structured mission interview.
+- **Mission interview**: short and practical — where the topic came from, what use it might have, and what it connects to in the learner's wider knowledge.
 - **socratic-skills**: one question at a time; on a partly right answer, probe
   before correcting.
 - **study-skill / agent-tutor**: FSRS review scheduling.
